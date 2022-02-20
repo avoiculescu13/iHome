@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\iHome.Data\iHome.Data.csproj" />
+    <ProjectReference Include="..\iHome.Model\iHome.Model.csproj" />
+  </ItemGroup>
+
+</Project>
