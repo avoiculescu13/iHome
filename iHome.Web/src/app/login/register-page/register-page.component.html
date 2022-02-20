@@ -1,0 +1,74 @@
+<section style="padding-top: 50px;">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <h2>{{pageTitle}}</h2>
+
+                <div style="margin-top:50px" class="alert alert-danger" role="alert" *ngIf="errorMessage">
+                    {{errorMessage}}
+                </div>
+
+                <form style="padding-top:50px" #formVar="ngForm" (ngSubmit)="onRegister(formVar)">
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example1" class="form-control form-control-lg" #nameVar="ngModel"
+                            placeholder="Enter full name" name="name" [(ngModel)]="user.name" required 
+                            [ngClass]="{'is-invalid': (nameVar.touched && !nameVar.valid) }"/>
+                            <span class="invalid-feedback">
+                                <span *ngIf="!nameVar.errors?.['required']">
+                                    <label>Please type the Full Name!</label>
+                                </span>
+                            </span>
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example2" class="form-control form-control-lg" #emailVar="ngModel"
+                            placeholder="Enter a valid email address" name="emailAddress" [(ngModel)]="user.emailAddress"
+                            required />
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="form3Example3" class="form-control form-control-lg" #userNameVar="ngModel"
+                            placeholder="Enter user name" name="userName" [(ngModel)]="user.userName" required
+                            minlength="5"
+                            [ngClass]="{'is-invalid': (userNameVar.touched && !userNameVar.valid) }" />
+                            <span class="invalid-feedback">
+                                <span *ngIf="!userNameVar.errors?.['required']">
+                                    <label>Please type the User Name!</label>
+                                </span>
+                                <span *ngIf="!userNameVar.errors?.['minLength']">
+                                    <label>Min length for UserName is 5!</label>
+                                </span>
+                            </span>
+                    </div>
+
+
+                    <div class="form-outline mb-3">
+                        <input type="password" id="form3Example4" class="form-control form-control-lg" #passwordVar="ngModel"
+                            placeholder="Enter password" name="password" [(ngModel)]="user.password" required 
+                            minlength="5"
+                            [ngClass]="{'is-invalid': (passwordVar.touched && !passwordVar.valid) }" />
+                            <span class="invalid-feedback">
+                                <span *ngIf="!passwordVar.errors?.['required']">
+                                    <label>Please type the Password!</label>
+                                </span>
+                                <span *ngIf="!passwordVar.errors?.['minLength']">
+                                    <label>Min length for Password is 5!</label>
+                                </span>
+                            </span>
+                    </div>
+
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                            [disabled]="!formVar.valid">Register</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
