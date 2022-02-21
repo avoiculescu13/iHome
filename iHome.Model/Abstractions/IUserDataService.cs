@@ -9,7 +9,7 @@ namespace iHome.Model
     public interface IUserDataService<T> : IRecordDataService<T>
         where T: Record
     {
-        LoginContext Authenticate(string userName, string password);
-        LoginContext Register(T user);
+        UseContext Authenticate(string userName, string password);
+        UseContext Register(T user);
     }
 }

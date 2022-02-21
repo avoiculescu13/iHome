@@ -7,30 +7,41 @@ namespace iHome.Data
 {
     public class UserDataService : IUserDataService<User>
     {
-        public LoginContext Authenticate(string userName, string password)
+        public UseContext Authenticate(string userName, string password)
         {
-            var user = DatabaseContext.Instance.Users.Where(r=>r.UserName == userName).FirstOrDefault();
-            if(user != null)
+            var user = DatabaseContext.Instance.Users.Where(r => r.UserName == userName).FirstOrDefault();
+            if (user != null)
             {
-                if(user.Password != password)
+                if (user.Password != password)
                 {
-                    return new LoginContext(user, LoginResponseType.WrongCredentials);
+                    return new UseContext(user, LoginResponseType.WrongCredentials);
                 }
 
                 if (user.IsLocked)
                 {
-                    return new LoginContext(user, LoginResponseType.LockedUser);
+                    return new UseContext(user, LoginResponseType.LockedUser);
                 }
 
-                return new LoginContext(user, LoginResponseType.Success);
+                return new UseContext(user, LoginResponseType.Success);
             }
-            return new LoginContext(null, LoginResponseType.UnknowUser);
+            return new UseContext(null, LoginResponseType.UnknowUser);
         }
 
-        public LoginContext Register(User user)
+        public UseContext Register(User user)
         {
+            if (DatabaseContext.Instance.Users.Where(r => r.UserName.Equals(user.UserName)).FirstOrDefault() != null)
+            {
+                return new UseContext(user, RegisterResponseType.DuplicateUserName);
+            }
+
+            if (DatabaseContext.Instance.Users.Where(r => r.EmailAddress.Equals(user.EmailAddress)).FirstOrDefault() != null)
+            {
+                return new UseContext(user, RegisterResponseType.DuplicateEmailAddress);
+            }
+
             DatabaseContext.Instance.Users.Add(user);
-            return new LoginContext(user, LoginResponseType.Success);
+            DatabaseContext.Instance.SaveChanges();
+            return new UseContext(user, RegisterResponseType.Success);
         }
 
         public bool Delete(User record)
@@ -58,7 +69,7 @@ namespace iHome.Data
             throw new NotImplementedException();
         }
 
-        
+
 
         public User Update(User record)
         {

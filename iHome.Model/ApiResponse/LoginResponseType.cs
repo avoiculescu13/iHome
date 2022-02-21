@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace iHome.Model
 {
-    public class LoginResponseType
+    public class LoginResponseType : ResponseType
     {
-        private static int _code;
-        public static string _message;
-
-        public int Code { get => _code; }
-        public string Message { get => _message; }
-
         private LoginResponseType(int code, string message)
         {
             _code = code;

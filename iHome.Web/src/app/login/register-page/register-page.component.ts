@@ -13,7 +13,7 @@ import { LoginService } from 'src/app/services/LoginService';
 export class RegisterPageComponent implements OnInit {
 
   public user!: User;
-  public pageTitle: string = 'Register Page';
+  public pageTitle: string = 'Register';
   private sub!: Subscription;
   public errorMessage: string = '';
 
@@ -39,10 +39,10 @@ export class RegisterPageComponent implements OnInit {
         .subscribe(
           {
             next: loginContext => {
-              if (loginContext.loginResponseType.code === 1) {
+              if (loginContext.responseType.code === 1) {
                 this.route.navigateByUrl('/welcome');
               } else {
-                this.errorMessage = loginContext.loginResponseType.message;
+                this.errorMessage = loginContext.responseType.message;
               }
             },
             error: msg => {
@@ -52,7 +52,7 @@ export class RegisterPageComponent implements OnInit {
         )
 
     } else {
-      this.errorMessage = 'Error!!!';
+      this.errorMessage = 'Error!';
     }
   }
 }

@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace iHome.Model
 {
-    public class LoginContext
+    public class UseContext
     {
         public User User { get; set; }
-        public LoginResponseType LoginResponseType { get; set; }
+        public ResponseType ResponseType { get; set; }
 
-        public LoginContext(User user, LoginResponseType responseType)
+        public UseContext(User user, ResponseType responseType)
         {
             User = user;
-            LoginResponseType = responseType;
+            ResponseType = responseType;
         }
     }
 }

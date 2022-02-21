@@ -1,6 +1,7 @@
 ﻿using iHome.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace iHome.Data
 {
@@ -27,19 +28,22 @@ namespace iHome.Data
         {
             this.Database.EnsureCreated();
 
-            //Inser admin user
-            this.Users.Add(new User()
+            //Insert admin user
+            if (this.Users.Where(r => r.IsAdmin == true).FirstOrDefault() == null)
             {
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                EmailAddress = "voiculescu.andrei88@gmail.com",
-                IsAdmin = true,
-                IsLocked = false,
-                Name = "Andrei Voiculescu",
-                Password = "Welcome#1",
-                UserName = "avoiculescu"
-            });
-            this.SaveChanges();
+                this.Users.Add(new User()
+                {
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    EmailAddress = "voiculescu.andrei88@gmail.com",
+                    IsAdmin = true,
+                    IsLocked = false,
+                    Name = "Andrei Voiculescu",
+                    Password = "Welcome#1",
+                    UserName = "avoiculescu"
+                });
+                this.SaveChanges();
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

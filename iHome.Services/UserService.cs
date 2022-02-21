@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace iHome.Services
 {
-    public class UserService: IUserService<User, LoginContext>
+    public class UserService: IUserService<User, UseContext>
     {
         private readonly IUserDataService<User> _userDataService;
 
@@ -17,12 +17,12 @@ namespace iHome.Services
             _userDataService = new UserDataService();
         }
 
-        public  LoginContext Authenticate(string userName, string password)
+        public  UseContext Authenticate(string userName, string password)
         {
             return _userDataService.Authenticate(userName, password);
         }
 
-        public LoginContext Register(User user)
+        public UseContext Register(User user)
         {
             return _userDataService.Register(user);
         }

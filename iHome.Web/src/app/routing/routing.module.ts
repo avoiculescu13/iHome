@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from '../welcome/welcome.component';
 import { PathNotFoundComponent } from '../path-not-found/path-not-found.component';
 import { NeedLoginGuard } from '../guards/route.guard';

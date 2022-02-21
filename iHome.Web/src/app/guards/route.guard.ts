@@ -12,12 +12,6 @@ export class NeedLoginGuard implements CanActivate {
 
     }
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-
-        // if ((_route.routeConfig.path === 'login' || _route.routeConfig.path === 'register') &&
-        //     this.loginService.getSnapshotCurrentUser() !== null) {
-        //         this.route.navigate(['/welcome']);
-        //         return false;
-        // }
         if (this.loginService.getSnapshotCurrentUser() == null) {
             this.route.navigate(['/login']);
             return false;

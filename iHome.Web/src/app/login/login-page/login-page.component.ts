@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LoginContext } from 'src/app/model/loginContext';
 import { LoginService } from 'src/app/services/LoginService';
 
 @Component({
@@ -14,7 +13,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   public userName: string = '';
   public password: string = '';
-  public pageTitle: string = 'Login Page';
+  public pageTitle: string = 'Login';
   public errorMessage: string = '';
   private sub!: Subscription;
 
@@ -22,7 +21,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     private route: Router) { }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -35,10 +33,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         .subscribe(
           {
             next: loginContext => {
-              if (loginContext.loginResponseType.code === 1) {
-                this.route.navigateByUrl('/welcome');
+              if (loginContext.responseType.code === 1) {
+                this.route.navigate(['/welcome']);
               } else {
-                this.errorMessage = loginContext.loginResponseType.message;
+                this.errorMessage = loginContext.responseType.message;
               }
             },
             error: msg => {
@@ -48,7 +46,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         )
 
     } else {
-      this.errorMessage = 'Error!!!';
+      this.errorMessage = 'Error!';
       this.userName = '';
       this.password = '';
     }

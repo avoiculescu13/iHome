@@ -8,16 +8,19 @@
         *ngIf="isLoggedIn">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['welcome']">Home <span class="sr-only"></span></a>
+          <a class="nav-link" [routerLink]="['/welcome']">Home <span class="sr-only"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['cars']">Auto</a>
+          <a class="nav-link" [routerLink]="['/cars']">Auto</a>
         </li>
         
       </ul>
     </div>
     <div style="margin-right: 20px;" *ngIf="isLoggedIn">
-      <ul class="navbar-nav mr-auto" style="float: right;">
+      <ul class="navbar-nav mr-auto" style="float: right; align-items: baseline;">
+        <li>
+          <h6 style="padding-right: 20px;" >Hello {{currentUserName}}</h6>
+        </li>
         <li class="nav-item">
           <button class="btn btn-light" (click)="onLogout()">Logout</button>
         </li>

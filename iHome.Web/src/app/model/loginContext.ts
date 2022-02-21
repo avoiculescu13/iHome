@@ -1,6 +1,6 @@
 import { User } from "./user";
 
-export class LoginContext{
+export class UseContext{
     public user: User;
-    public loginResponseType: any;
+    public responseType: any;
 }

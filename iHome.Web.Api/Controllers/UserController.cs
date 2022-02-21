@@ -15,9 +15,9 @@ namespace iHome.Web.Api.Controllers
     {
 
         private readonly ILogger<UserController> _logger;
-        private readonly IUserService<User, LoginContext> _userService;
+        private readonly IUserService<User, UseContext> _userService;
 
-        public UserController(ILogger<UserController> logger, IUserService<User, LoginContext> userService)
+        public UserController(ILogger<UserController> logger, IUserService<User, UseContext> userService)
         {
             _logger = logger;
             _userService = userService;
@@ -25,16 +25,16 @@ namespace iHome.Web.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public LoginContext Register(User user)
+        public UseContext Register(User user)
         {
             return _userService.Register(user);
         }
 
         [HttpPost]
         [Route("authenticate")]
-        public LoginContext Authenticate(User user)
+        public UseContext Authenticate(User user)
         {
-            LoginContext context = _userService.Authenticate(user.UserName, user.Password);
+            UseContext context = _userService.Authenticate(user.UserName, user.Password);
 
             return context;
         }

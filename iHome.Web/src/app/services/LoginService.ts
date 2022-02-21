@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http"
 import { User } from "../model/user";
 import { catchError, Observable, of, tap, throwError } from "rxjs";
-import { LoginContext } from "../model/loginContext";
+import { UseContext } from "../model/loginContext";
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +30,7 @@ export class LoginService {
         return this.currentUser;
     }
 
-    login(userName: string, password: string): Observable<LoginContext> {
+    login(userName: string, password: string): Observable<UseContext> {
         this.user = {
             emailAddress: '',
             isAdmin: false,
@@ -39,16 +39,20 @@ export class LoginService {
             password: password,
             userName: userName
         };
-
-        return this.httpClient.post<LoginContext>("https://localhost:44321/User/authenticate", this.user).pipe(
+        
+        return this.httpClient.post<UseContext>("https://localhost:44321/User/authenticate", this.user).pipe(
             catchError(this.errorHandler),
-            tap(x => this.currentUser = x.user)
+            tap(x => 
+                {
+                    if(x.responseType.code === 1)
+                        this.currentUser = x.user
+                })
         );
     }
 
-    register(user: User): Observable<LoginContext> {
+    register(user: User): Observable<UseContext> {
         this.user = user;
-        return this.httpClient.post<LoginContext>("https://localhost:44321/User/register", this.user).pipe(
+        return this.httpClient.post<UseContext>("https://localhost:44321/User/register", this.user).pipe(
             catchError(this.errorHandler),
             tap(x => this.currentUser = x.user)
         );

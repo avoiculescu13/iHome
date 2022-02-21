@@ -23,6 +23,10 @@ export class AppComponent implements OnInit {
     return this.loginService.getSnapshotCurrentUser() !== null;
   }
 
+  get currentUserName(): string{
+    return this.loginService.getSnapshotCurrentUser()?.name;
+  }
+
   onLogout(){
     this.loginService.logout().subscribe({
       next: s => {

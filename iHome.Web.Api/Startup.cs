@@ -36,7 +36,7 @@ namespace iHome.Web.Api
             });
 
             services.AddScoped<ICarService<Car, Record>, CarService>();
-            services.AddScoped<IUserService<User, LoginContext>, UserService>();
+            services.AddScoped<IUserService<User, UseContext>, UserService>();
 
         }
 
