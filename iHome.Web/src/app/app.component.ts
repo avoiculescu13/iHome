@@ -11,27 +11,40 @@ import { LoginService } from './services/LoginService';
 })
 export class AppComponent implements OnInit {
   title = 'iHome.Web';
+  isMessagePanelVisible: boolean = false;
 
   constructor(private loginService: LoginService,
-              private route: Router) {
+    private route: Router) {
 
   }
   ngOnInit(): void {
   }
 
-  get isLoggedIn(): boolean{
+  get isLoggedIn(): boolean {
     return this.loginService.getSnapshotCurrentUser() !== null;
   }
 
-  get currentUserName(): string{
-    return this.loginService.getSnapshotCurrentUser()?.name;
+  get currentUserName(): string {
+    return this.loginService.getSnapshotCurrentUser()?.userName;
   }
 
-  onLogout(){
+  onLogout() {
+    debugger;
+
     this.loginService.logout().subscribe({
       next: s => {
-         this.route.navigate(['/login']); 
+        this.route.navigate([{ outlets: { notifications: null, primary: ['login'],  } }]);
       }
     })
+  }
+
+  showUserActivity() {
+    if (this.isMessagePanelVisible) {
+      this.isMessagePanelVisible = false;
+      this.route.navigate([{ outlets: { notifications: null } }])
+    } else {
+      this.isMessagePanelVisible = true;
+      this.route.navigate([{ outlets: { notifications: ['notifications'] } }])
+    }
   }
 }

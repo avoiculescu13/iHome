@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Register Revision</h2>
+<mat-dialog-content class="mat-typography">
+    <div>
+        <form style="padding-top:50px" #formVar="ngForm" (ngSubmit)="onSave()">
+
+            <mat-form-field>
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="date" name="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="form-outline mb-4">
+                <input type="number" id="form3Example2" class="form-control form-control-lg" placeholder="Price"
+                    name="price" #price="ngModel" [(ngModel)]="price" required
+                    />
+                <label class="form-label" for="form3Example2">Price*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="number" id="form3Example3" class="form-control form-control-lg" name="kilometers"
+                    [(ngModel)]="kilometers" placeholder="Kilometers" required />
+                <label class="form-label" for="form3Example3">Kilometers*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example4" class="form-control form-control-lg" placeholder="Garage"
+                    name="garage" [(ngModel)]="garage" required />
+                <label class="form-label" for="form3Example4">Garage*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example1" class="form-control form-control-lg" placeholder="Notes"
+                    name="notes" [(ngModel)]="notes" required />
+                <label class="form-label" for="form3Example1">Notes</label>
+            </div>
+
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button
+        [mat-dialog-close]="{notes: notes, garage: garage, date: date, kilometers: kilometers}">Add</button>
+</mat-dialog-actions>

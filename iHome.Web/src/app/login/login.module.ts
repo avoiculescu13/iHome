@@ -6,8 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-
-
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { NeedLoginGuard } from '../guards/route.guard';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -19,11 +21,14 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     FormsModule,
     CommonModule,
     RouterModule.forChild([
-      { path:'login', component: LoginPageComponent },
-      { path:'register', component: RegisterPageComponent },
-      { path:'forgotPassword', component: ForgotPasswordComponent }
+      { path: 'login', component: LoginPageComponent, canActivate: [NeedLoginGuard] },
+      { path: 'register', component: RegisterPageComponent, canActivate: [NeedLoginGuard] },
+      { path: 'forgotPassword', component: ForgotPasswordComponent }
     ]),
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatNativeDateModule
   ]
 })
 export class LoginModule { }

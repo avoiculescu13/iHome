@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginService } from 'src/app/services/LoginService';
@@ -17,10 +19,17 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   public errorMessage: string = '';
   private sub!: Subscription;
 
+  public color: ThemePalette = 'primary';
+  public mode: ProgressSpinnerMode = 'indeterminate';
+  public value = 10;
+  public isLoading: boolean = false;
+
   constructor(private loginService: LoginService,
     private route: Router) { }
 
   ngOnDestroy(): void {
+    if (this.sub)
+      this.sub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -28,7 +37,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   onLogin(ngForm: NgForm): void {
     if (ngForm.valid) {
-
+      this.errorMessage = '';
+      this.isLoading = true;
       this.sub = this.loginService.login(this.userName, this.password)
         .subscribe(
           {
@@ -37,10 +47,12 @@ export class LoginPageComponent implements OnInit, OnDestroy {
                 this.route.navigate(['/welcome']);
               } else {
                 this.errorMessage = loginContext.responseType.message;
+                this.isLoading = false;
               }
             },
             error: msg => {
               this.errorMessage = msg;
+              this.isLoading = false;
             }
           }
         )

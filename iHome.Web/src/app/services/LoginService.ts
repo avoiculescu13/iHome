@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http"
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http"
 import { User } from "../model/user";
 import { catchError, Observable, of, tap, throwError } from "rxjs";
 import { UseContext } from "../model/loginContext";
@@ -35,7 +35,7 @@ export class LoginService {
             emailAddress: '',
             isAdmin: false,
             isLocked: false,
-            name: '',
+            fullName: '',
             password: password,
             userName: userName
         };
@@ -55,6 +55,15 @@ export class LoginService {
         return this.httpClient.post<UseContext>("https://localhost:44321/User/register", this.user).pipe(
             catchError(this.errorHandler),
             tap(x => this.currentUser = x.user)
+        );
+    }
+
+    forgotPassword(emailAddress: string): Observable<string> {
+        let headers = new HttpHeaders();
+                headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+
+        return this.httpClient.post<string>("https://localhost:44321/Mail/recoverPassword", JSON.stringify(emailAddress), {headers: headers}).pipe(
+            catchError(this.errorHandler),
         );
     }
 

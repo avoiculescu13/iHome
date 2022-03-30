@@ -1,0 +1,10 @@
+<div class="list-group" style="max-height: 50px;">
+  <div class="list-group-item list-group-item-action flex-column align-items-start"
+    *ngFor="let message of activityList">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{message.EntityType}}</h5>
+      <small>{{message.DateCreated | date}}</small>
+    </div>
+    <p class="mb-1">{{message.Action}}: {{message.ActionStatus}}</p>
+  </div>
+</div>

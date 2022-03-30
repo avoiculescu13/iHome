@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomeComponent implements OnInit {
 
-  public message: string = "Use this app whenever you need to manage in-house activities.";
+  public message: string = "";
 
   constructor() { }
 
