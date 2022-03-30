@@ -1,4 +1,5 @@
 ﻿using iHome.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,39 +10,55 @@ namespace iHome.Data
     {
         public UseContext Authenticate(string userName, string password)
         {
-            var user = DatabaseContext.Instance.Users.Where(r => r.UserName == userName).FirstOrDefault();
+            User user = null;
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                user = context.Users.Where(r => r.UserName == userName).AsNoTracking().FirstOrDefault();
+            }
+
             if (user != null)
             {
                 if (user.Password != password)
                 {
-                    return new UseContext(user, LoginResponseType.WrongCredentials);
+                    return new UseContext(user, AuthenticationResponseType.Instance.WrongCredentials);
                 }
 
                 if (user.IsLocked)
                 {
-                    return new UseContext(user, LoginResponseType.LockedUser);
+                    return new UseContext(user, AuthenticationResponseType.Instance.LockedUser);
                 }
 
-                return new UseContext(user, LoginResponseType.Success);
+                return new UseContext(user, AuthenticationResponseType.Instance.Success);
             }
-            return new UseContext(null, LoginResponseType.UnknowUser);
+            return new UseContext(null, AuthenticationResponseType.Instance.UnknowUser);
         }
 
         public UseContext Register(User user)
         {
-            if (DatabaseContext.Instance.Users.Where(r => r.UserName.Equals(user.UserName)).FirstOrDefault() != null)
+            User usr = null;
+            using (DatabaseContext context = new DatabaseContext())
             {
-                return new UseContext(user, RegisterResponseType.DuplicateUserName);
+                usr = context.Users.Where(r => r.UserName.Equals(user.UserName)).AsNoTracking().FirstOrDefault();
+                if (usr != null)
+                {
+                    return new UseContext(user, AuthenticationResponseType.Instance.DuplicateUserName);
+                }
+
+                usr = context.Users.Where(r => r.EmailAddress.Equals(user.EmailAddress)).AsNoTracking().FirstOrDefault();
+                if (usr != null)
+                {
+                    return new UseContext(user, AuthenticationResponseType.Instance.DuplicateEmailAddress);
+                }
+
+                user.RecordId = Guid.NewGuid();
+                user.DateCreated = DateTime.Now;
+                user.DateModified = DateTime.Now;
+
+                context.Users.Add(user);
+                context.SaveChanges();
             }
 
-            if (DatabaseContext.Instance.Users.Where(r => r.EmailAddress.Equals(user.EmailAddress)).FirstOrDefault() != null)
-            {
-                return new UseContext(user, RegisterResponseType.DuplicateEmailAddress);
-            }
-
-            DatabaseContext.Instance.Users.Add(user);
-            DatabaseContext.Instance.SaveChanges();
-            return new UseContext(user, RegisterResponseType.Success);
+            return new UseContext(user, AuthenticationResponseType.Instance.Success);
         }
 
         public bool Delete(User record)
@@ -69,11 +86,17 @@ namespace iHome.Data
             throw new NotImplementedException();
         }
 
-
-
         public User Update(User record)
         {
             throw new NotImplementedException();
+        }
+
+        public User GetByUserName(string userName)
+        {
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                return context.Users.Where(r => r.UserName == userName).AsNoTracking().FirstOrDefault();
+            }
         }
     }
 }

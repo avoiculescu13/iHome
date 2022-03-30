@@ -1,5 +1,7 @@
 using iHome.Model;
 using iHome.Services;
+using iHome.Web.Api.Model;
+using iHome.Web.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,8 +37,13 @@ namespace iHome.Web.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "iHome.Web.Api", Version = "v1" });
             });
 
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+
             services.AddScoped<ICarService<Car, Record>, CarService>();
             services.AddScoped<IUserService<User, UseContext>, UserService>();
+            services.AddScoped<IUserActivityService<UserActivity>, UserActivityService>();
+
+            services.AddTransient<IMailService, MailService>();
 
         }
 
@@ -58,9 +65,6 @@ namespace iHome.Web.Api
             .AllowAnyHeader()
             .AllowAnyOrigin()
             .AllowAnyMethod());
-
-
-
 
             app.UseAuthorization();
 

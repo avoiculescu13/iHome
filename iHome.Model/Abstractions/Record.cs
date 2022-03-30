@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace iHome.Model
@@ -12,9 +13,8 @@ namespace iHome.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; protected set; }
+        public Guid RecordId { get; set; }
         public DateTime DateModified { get; set; }
         public DateTime DateCreated { get; set; }
-        public User User { get; set; }
     }
 }

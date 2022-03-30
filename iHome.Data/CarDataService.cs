@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,72 +13,153 @@ namespace iHome.Data
 {
     public class CarDataService : ICarDataService<Car, Record>
     {
+        private readonly IUserActivityDataService<UserActivity> _userActvDataService;
+
+        public CarDataService()
+        {
+            _userActvDataService = new UserActivityDataService();
+        }
+
         public bool Delete(Car car)
         {
-            DatabaseContext.Instance.Cars.Remove(car);
-            DatabaseContext.Instance.SaveChanges();
-            return true;
+            try
+            {
+                using(DatabaseContext dbContext = new DatabaseContext())
+                {
+                    dbContext.Cars.Remove(car);
+                    dbContext.SaveChanges();
+                }
+
+                _userActvDataService.Insert(BuildUserActivity(car, "Delete", "Success"));
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _userActvDataService.Insert(BuildUserActivity(car, "Delete", "Failed"));
+                ExceptionDispatchInfo.Capture(ex).Throw();
+            }
+            return false;
         }
 
         public bool DeleteById(Guid id)
         {
-            DatabaseContext.Instance.Cars.Remove(GetById(id));
-            DatabaseContext.Instance.SaveChanges();
-            return true;
+            return this.Delete(GetById(id));
         }
 
         public List<Car> GetAll()
         {
-            return DatabaseContext.Instance.Cars.ToList();
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                return dc.Cars.AsNoTracking().ToList();
+            }
         }
 
         public List<Car> GetByBrand(string brand)
         {
-            return DatabaseContext.Instance.Cars.Where(r => r.Brand == brand).ToList();
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                return dc.Cars.Where(r => r.Brand == brand).AsNoTracking().ToList();
+            }
         }
         public Car GetById(Guid id)
         {
-            return DatabaseContext.Instance.Cars.Where(r => r.Id == id).FirstOrDefault();
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                return dc.Cars.Where(r => r.RecordId == id).AsNoTracking().FirstOrDefault();
+            }
         }
 
         public List<Car> GetByType(CarType type)
         {
-            return DatabaseContext.Instance.Cars.Where(r => r.Type == type).ToList();
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                return dc.Cars.Where(r => r.Type == type).AsNoTracking().ToList();
+            }
         }
 
         public Car Insert(Car car)
         {
-            DatabaseContext.Instance.Cars.Add(car);
-            DatabaseContext.Instance.SaveChanges();
+            try
+            {
+                car.RecordId = Guid.NewGuid();
+                car.DateModified = DateTime.Now;
+                car.DateCreated = DateTime.Now;
+
+                using (DatabaseContext dc = new DatabaseContext())
+                {
+                    dc.Cars.Add(car);
+                    dc.SaveChanges();
+                }
+
+                _userActvDataService.Insert(BuildUserActivity(car, "Insert", "Success"));
+            }
+            catch (Exception ex)
+            {
+                _userActvDataService.Insert(BuildUserActivity(car, "Insert", "Failed"));
+                ExceptionDispatchInfo.Capture(ex).Throw();
+            }
+
             return car;
         }
 
         public Car RegisterTechnicalInspection(Car car, Record inspection)
         {
-            var c = DatabaseContext.Instance.Cars.Include(r=>r.TechnicalInspection).FirstOrDefault(d=>d.Id == car.Id);
+            inspection.RecordId = Guid.NewGuid();
+            inspection.DateModified = DateTime.Now;
+            inspection.DateCreated = DateTime.Now;
 
-            car.TechnicalInspection.Add((PeriodicTechnicalInspection)inspection);
-            c = car;
-            DatabaseContext.Instance.Entry(car).State = EntityState.Modified;
-            //DatabaseContext.Instance.Cars.Update(car);
-            DatabaseContext.Instance.SaveChanges();
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                //var c = dc.Cars.Include(r => r.TechnicalInspection).FirstOrDefault(d => d.RecordId == car.RecordId);
+
+                car.TechnicalInspection.Add((PeriodicTechnicalInspection)inspection);
+                dc.Entry(car).State = EntityState.Modified;
+                dc.SaveChanges();
+            }
 
             return car;
         }
 
         public Car RegisterTechnicalRevision(Car car, Record revision)
         {
-            car.TechnicalRevision.Add((PeriodicTechnicalRevision)revision);
-            DatabaseContext.Instance.Cars.Update(car);
-            DatabaseContext.Instance.SaveChanges();
+            revision.RecordId = Guid.NewGuid();
+            revision.DateModified = DateTime.Now;
+            revision.DateCreated = DateTime.Now;
+
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                car.TechnicalRevision.Add((PeriodicTechnicalRevision)revision);
+                dc.Entry(car).State = EntityState.Modified;
+                dc.SaveChanges();
+            }
 
             return car;
         }
 
         public Car Update(Car record)
         {
-            DatabaseContext.Instance.Cars.Update(record);
+            record.DateModified = DateTime.Now;
+            using (DatabaseContext dc = new DatabaseContext())
+            {
+                dc.Cars.Update(record);
+                dc.SaveChanges();
+            }
+
             return record;
+        }
+
+
+        private UserActivity BuildUserActivity(Record record, string action, string actionStatus)
+        {
+            UserActivity result = new UserActivity();
+            result.ActionStatus = actionStatus;
+            result.Action = action;
+            result.EntityId = record != null ? record.RecordId : Guid.Empty;
+            result.EntityType = record.GetType().Name;
+            result.UserName = (record as Car).UserName;
+
+            return result;
         }
     }
 }

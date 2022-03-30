@@ -11,5 +11,6 @@ namespace iHome.Model
     {
         UseContext Authenticate(string userName, string password);
         UseContext Register(T user);
+        T GetByUserName(string userName);
     }
 }

@@ -3,6 +3,7 @@ using iHome.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 
 namespace iHome.Services
 {
@@ -17,16 +18,17 @@ namespace iHome.Services
 
         public Car Insert(Car obj)
         {
-            obj.DateCreated = DateTime.Now;
-            obj.DateModified = DateTime.Now;
-
             return _carDataService.Insert(obj);
         }
 
         public Car Update(Car obj)
         {
-            obj.DateModified = DateTime.Now;
             return _carDataService.Update(obj);
+        }
+
+        public void Delete(Guid id)
+        {
+            _carDataService.DeleteById(id);
         }
 
         public IList<Car> RetriveAll()

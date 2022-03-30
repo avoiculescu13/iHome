@@ -12,7 +12,6 @@ namespace iHome.Model
     {
         public PeriodicTechnicalRevision()
         {
-            Id = Guid.NewGuid();
         }
 
         public DateTime Date { get; set; }

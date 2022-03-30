@@ -13,6 +13,7 @@ namespace iHome.Services
     {
         T Insert(T obj);
         T Update(T obj);
+        void Delete(Guid id);
         IList<T> RetriveAll();
         T RetriveById(Guid id);
         T AssignRevision(Guid id, U revision);

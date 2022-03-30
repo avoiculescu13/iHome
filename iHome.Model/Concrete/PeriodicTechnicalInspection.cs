@@ -12,7 +12,6 @@ namespace iHome.Model
     {
         public PeriodicTechnicalInspection()
         {
-            Id = Guid.NewGuid();
         }
 
         public bool Passed { get; set; }

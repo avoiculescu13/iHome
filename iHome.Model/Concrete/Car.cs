@@ -13,11 +13,11 @@ namespace iHome.Model
         private List<PeriodicTechnicalInspection> _inspections;
         public Car()
         {
-            Id = Guid.NewGuid();
             _revisions = new List<PeriodicTechnicalRevision>();
             _inspections = new List<PeriodicTechnicalInspection>();
         }
 
+        public string UserName { get; set; }
         public CarType Type { get; set; }
         public string Color { get; set; }
         public double CylinderCapacity { get; set; }
