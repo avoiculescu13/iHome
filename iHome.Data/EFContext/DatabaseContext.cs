@@ -40,5 +40,18 @@ namespace iHome.Data
             options.UseSqlServer(@"Server=.\SqlExpress;Database=iHome;User Id=sa;Password=minegold;");
             options.EnableSensitiveDataLogging(true);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Car>()
+                .HasMany(r => r.TechnicalInspection)
+                .WithOne().OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Car>()
+                .HasMany(r => r.TechnicalRevision)
+                .WithOne().OnDelete(DeleteBehavior.Cascade);
+            ;                
+                
+        }
     }
 }

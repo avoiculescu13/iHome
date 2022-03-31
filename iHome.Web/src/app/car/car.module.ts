@@ -23,6 +23,7 @@ import { TechnicalRevisionAddDialogComponent } from '../dialogs/technical-revisi
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { YesNoPipe } from '../shared/pipes/boolean-pipe';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     TechnicalRevisionListComponent,
     TechnicalRevisionEditComponent,
     TechnicalInspectionAddDialogComponent,
-    TechnicalRevisionAddDialogComponent
+    TechnicalRevisionAddDialogComponent,
+    YesNoPipe
   ],
   imports: [
     CommonModule,

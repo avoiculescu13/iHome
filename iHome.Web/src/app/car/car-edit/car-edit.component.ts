@@ -56,16 +56,8 @@ export class CarEditComponent implements OnInit {
   }
 
   save(): void {
-    var rootFormGroup = FormModelStorageService.get('carFormGroup').formObject as FormGroup;
-
-    debugger;
-
-
-    // var revisionFrom = rootFormGroup.get('revision') as FormGroup;
-    // this.carRecord.TechnicalRevision.push(revisionFrom.get('list').value);
-
-
     if (true) {
+      this.controlsToObject();
       this.carService.save(this.carRecord).subscribe({
         next: prod => {
           this.router.navigate(['/cars']);
@@ -73,4 +65,13 @@ export class CarEditComponent implements OnInit {
       });
     }
   }
+
+  controlsToObject(){
+    var rootFormGroup = FormModelStorageService.get('carFormGroup').formObject as FormGroup;
+    var baseForm = rootFormGroup.get('basic') as FormGroup;
+    this.carRecord.Brand = baseForm.get('model').value;
+    this.carRecord.TypeName = baseForm.get('type').value;
+    this.carRecord.Color = baseForm.get('color').value;
+  }
+
 }

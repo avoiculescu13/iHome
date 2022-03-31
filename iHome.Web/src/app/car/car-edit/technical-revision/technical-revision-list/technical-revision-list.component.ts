@@ -16,7 +16,7 @@ import { FormModelStorageService } from 'src/app/services/FormModelStorage';
 export class TechnicalRevisionListComponent implements OnInit {
 
   public formGroup: FormGroup;
-  displayedColumns: string[] = ['kilometers', 'notes', 'serviceGarage', 'price', 'date'];
+  displayedColumns: string[] = ['kilometers', 'notes', 'serviceGarage', 'price', 'date', 'button'];
   dataSource: MatTableDataSource<PeriodicTechnicalRevision>;
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
@@ -38,24 +38,22 @@ export class TechnicalRevisionListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      var rev = new PeriodicTechnicalRevision();
-      rev.Date = result.date;
-      rev.Notes = result.notes;
-      rev.Price = result.price;
-      rev.ServiceGarage = result.garage;
-      rev.Kilometers = result.kilometers;
+      if (result && result != '') {
+        var rev = new PeriodicTechnicalRevision();
+        rev.Date = result.date;
+        rev.Notes = result.notes;
+        rev.Price = result.price;
+        rev.ServiceGarage = result.garage;
+        rev.Kilometers = result.kilometers;
 
-      this.dataSource.data.push(rev);
-      this.dataSource.data = this.dataSource.data;
-
-      this.objectToControls();
+        this.dataSource.data.push(rev);
+        this.dataSource.data = this.dataSource.data;
+      }
     });
   }
 
-  objectToControls(): void{
-    // debugger;
-    // this.formGroup.patchValue({
-    //   list: this.dataSource.data
-    // });
+  removeItem(id: string): void {
+    this.dataSource.data.splice(this.dataSource.data.findIndex(r => r.Id === id), 1);
+    this.dataSource.data = this.dataSource.data;
   }
 }

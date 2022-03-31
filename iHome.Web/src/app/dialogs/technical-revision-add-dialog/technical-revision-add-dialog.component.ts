@@ -19,7 +19,6 @@ export class TechnicalRevisionAddDialogComponent implements OnInit {
   }
 
   onSave(): void{
-
   }
 
 }

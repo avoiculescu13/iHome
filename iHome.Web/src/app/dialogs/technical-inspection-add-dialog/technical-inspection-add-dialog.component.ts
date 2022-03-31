@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TechnicalInspectionAddDialogComponent implements OnInit {
 
+  passed: boolean;
+  kilometers: number;
+  notes: string;
+  garage: string;
+  price: number;
+  date: Date;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onSave(): void{
   }
 
 }

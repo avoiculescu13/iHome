@@ -1,1 +1,53 @@
-<p>technical-inspection-add-dialog works!</p>
+<h2 mat-dialog-title>Register Revision</h2>
+<mat-dialog-content class="mat-typography">
+    <div>
+        <form style="padding-top:50px" #formVar="ngForm" (ngSubmit)="onSave()">
+
+            <div class="form-outline mb-4">
+                <input class="form-check-input" type="checkbox" value="" name="passed" id="flexCheckDefault" [(ngModel)]="passed" />
+                <label class="form-check-label" for="flexCheckDefault">Passed?</label>
+            </div>
+
+            <mat-form-field>
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="picker" [(ngModel)]="date" name="date" #dateVar="ngModel" required
+                [ngClass]="{'is-invalid': dateVar.touched && !dateVar.valid}"/>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="form-outline mb-4">
+                <input type="number" id="form3Example2" class="form-control form-control-lg" placeholder="Price"
+                    name="price" [(ngModel)]="price" required #priceVar="ngModel"
+                    [ngClass]="{'is-invalid': priceVar.touched && !priceVar.valid}" />
+                <label class="form-label" for="form3Example2">Price*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="number" id="form3Example3" class="form-control form-control-lg" name="kilometers"
+                    [(ngModel)]="kilometers" placeholder="Kilometers" required #kilVar="ngModel"
+                    [ngClass]="{'is-invalid': kilVar.touched && !kilVar.valid}"/>
+                <label class="form-label" for="form3Example3">Kilometers*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example4" class="form-control form-control-lg" placeholder="Garage"
+                    name="garage" [(ngModel)]="garage" required #garVar="ngModel"
+                    [ngClass]="{'is-invalid': garVar.touched && !garVar.valid}"/>
+                <label class="form-label" for="form3Example4">Garage*</label>
+            </div>
+
+            <div class="form-outline mb-4">
+                <input type="text" id="form3Example1" class="form-control form-control-lg" placeholder="Notes"
+                    name="notes" [(ngModel)]="notes" />
+                <label class="form-label" for="form3Example1">Notes</label>
+            </div>
+
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [disabled]="!formVar.valid"
+        [mat-dialog-close]="{notes: notes, price: price, garage: garage, date: date, kilometers: kilometers, passed: passed}">Add</button>
+</mat-dialog-actions>

@@ -1,4 +1,5 @@
 import { Color } from "@angular-material-components/color-picker";
+import { Guid } from "../helpers/string-helpers";
 import { LoginService } from "../services/LoginService";
 
 export class Car {
@@ -32,6 +33,9 @@ export class Car {
 }
 
 export class PeriodicTechnicalInspection {
+    constructor(){
+        this.Id = Guid.newGuid();
+    }
     Id: string;
     Passed: boolean;
     Kilometers: number;
@@ -42,6 +46,9 @@ export class PeriodicTechnicalInspection {
 }
 
 export class PeriodicTechnicalRevision {
+    constructor(){
+        this.Id = Guid.newGuid();
+    }
     Id: string;
     Kilometers: number;
     Notes: string;
