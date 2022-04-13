@@ -1,0 +1,31 @@
+<div>
+
+  <form [formGroup]="carFormGroup" (ngSubmit)="save()">
+
+    <section>
+      <div class="container-fluid h-custom">
+
+        <nav mat-tab-nav-bar style="margin:auto; width: 40%">
+          <a mat-tab-link [routerLink]="['basic']">Basic Details</a>
+          <a mat-tab-link [routerLink]="['technicalRevision']">Technical Revisions</a>
+          <a mat-tab-link [routerLink]="['technicalInspection']">Technical Inspections</a>
+        </nav>
+
+        <router-outlet></router-outlet>
+
+      </div>
+
+      <div style="display:inline-flex; width: 80%; margin:auto">
+        <div class="text-center text-lg-start mt-4 pt-2">
+          <button type="submit" class="btn btn-primary" [disabled]="!carFormGroup.valid"
+            style="padding-left: 2.5rem; padding-right: 2.5rem;">Save</button>
+        </div>
+
+        <div class="text-center text-lg-start mt-4 pt-2">
+          <button class="btn btn-secondary" [routerLink]="['/cars']"
+            style="padding-left: 2.5rem; padding-right: 2.5rem; margin-left: 10px;">Cancel</button>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

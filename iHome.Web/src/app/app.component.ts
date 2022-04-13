@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { User } from './model/user';
-import { LoginService } from './services/LoginService';
+import { LoginService } from './core/services/LoginService';
 
 @Component({
   selector: 'app-root',
@@ -29,16 +27,16 @@ export class AppComponent implements OnInit {
   }
 
   onLogout() {
-    debugger;
 
     this.loginService.logout().subscribe({
       next: s => {
-        this.route.navigate([{ outlets: { notifications: null, primary: ['login'],  } }]);
+        this.route.navigate([{ outlets: { notifications: null, primary: ['login'], } }]);
       }
     })
   }
 
   showUserActivity() {
+
     if (this.isMessagePanelVisible) {
       this.isMessagePanelVisible = false;
       this.route.navigate([{ outlets: { notifications: null } }])
@@ -46,5 +44,6 @@ export class AppComponent implements OnInit {
       this.isMessagePanelVisible = true;
       this.route.navigate([{ outlets: { notifications: ['notifications'] } }])
     }
+
   }
 }

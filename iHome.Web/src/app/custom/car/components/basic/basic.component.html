@@ -1,0 +1,70 @@
+<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1" style="width: 70%; margin: auto">
+    <form style="padding-top:50px" [formGroup]="formGroup">
+
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 60%; padding-left: 50px;">
+                    <div class=" form-outline mb-4" style="width:300px">
+                        <label class="form-label">Model</label>
+                        <input type="text" class="form-control form-control-lg" formControlName="model" placeholder="Model"
+                            [class]="{'is-invalid': (formGroup.get('model').touched && !formGroup.get('model').valid) }" />
+                    </div>
+            
+                    <div class="form-outline mb-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Car Type</mat-label>
+                            <mat-select formControlName="type">
+                                <mat-option *ngFor="let val of carTypes" value='{{val}}'>{{val}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            
+                    <div class="form-outline mb-2">
+                        <mat-form-field>
+                            <mat-label>Manufacture Date</mat-label>
+                            <input matInput [matDatepicker]="datePicker" formControlName="manufactureDate" required
+                                [ngClass]="{'is-invalid': (formGroup.get('manufactureDate').touched && !formGroup.get('manufactureDate').valid) }" />
+                            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #datePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+            
+                    <div class="form-outline mb-2" style="width:300px">
+                        <input type="number" id="form3Example2" class="form-control form-control-lg" placeholder="Price"
+                            required formControlName="price"
+                            [ngClass]="{'is-invalid': (formGroup.get('price').touched && !formGroup.get('price').valid) }" />
+                        <label class="form-label" for="form3Example2">Price*</label>
+                    </div>
+            
+                    <div class="form-outline mb-2" style="width:300px">
+                        <input type="number" id="form3Example3" class="form-control form-control-lg" placeholder="Capacity"
+                            required formControlName="capacity"
+                            [ngClass]="{'is-invalid': (formGroup.get('capacity').touched && !formGroup.get('capacity').valid) }" />
+                        <label class="form-label" for="form3Example3">Cylinder Capacity*</label>
+                    </div>
+            
+                    <div class="form-outline mb-9">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Color</mat-label>
+                            <input matInput [ngxMatColorPicker]="picker" formControlName="color">
+                            <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                            <ngx-mat-color-picker #picker [color]="color"></ngx-mat-color-picker>
+                        </mat-form-field>
+                    </div>
+            
+                    
+                </td>
+                <td style="vertical-align: middle;">
+                    <div>
+                        <div class="form-outline mb-2">
+                            <label class="btn btn-outline-success btn-sm" for="files">Select Picture</label>
+                            <label>{{fileName}}</label>
+                            <input id="files" class="form-control form-control-sm" style="display: none" type="file"
+                                (change)="handleFileInput($event.target)" accept="image/gif, image/jpeg, image/png" />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
